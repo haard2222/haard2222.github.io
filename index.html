@@ -13,7 +13,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-tint"></i>
                     <span>LifeConnect</span>
                 </div>
                 <nav class="nav">
@@ -30,18 +30,35 @@
         <div id="home" class="page active">
             <div class="hero">
                 <div class="container">
-                    <div class="hero-content">
-                        <h1>Save Lives, Donate Blood</h1>
-                        <p class="hero-subtitle">Connect with blood donors and requesters in your area</p>
+                    <div class="hero-card">
+                        <div class="hero-icon">
+                            <i class="fas fa-heart-pulse"></i>
+                        </div>
+                        <h1>Save Lives Today</h1>
+                        <p class="hero-subtitle">Connect with blood donors and help save lives in your community</p>
                         <div class="hero-actions">
                             <button class="btn btn--primary btn--lg" onclick="navigateTo('register')">
                                 <i class="fas fa-user-plus"></i>
-                                Register as Donor
+                                Donate Now
                             </button>
-                            <button class="btn btn--outline btn--lg" onclick="navigateTo('request')">
+                            <button class="btn btn--secondary btn--lg" onclick="navigateTo('request')">
                                 <i class="fas fa-search"></i>
                                 Request Blood
                             </button>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">1,247</div>
+                                <div class="stat-label">Donors</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">3,891</div>
+                                <div class="stat-label">Lives Saved</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Support</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -56,73 +73,94 @@
                         <i class="fas fa-arrow-left"></i> Back
                     </button>
                     <h2>Register as Donor</h2>
+                    <div class="progress-indicator">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="progress-text">Step 1 of 1</span>
+                    </div>
                 </div>
                 <div class="form-container">
-                    <form id="donorForm" class="donor-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label" for="fullName">Full Name *</label>
-                                <input type="text" id="fullName" name="fullName" class="form-control" required>
+                    <div class="form-card">
+                        <form id="donorForm" class="donor-form">
+                            <div class="form-section">
+                                <h3>Personal Information</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="fullName">Full Name *</label>
+                                        <input type="text" id="fullName" name="fullName" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="phone">Phone Number *</label>
+                                        <input type="tel" id="phone" name="phone" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="email">Email *</label>
+                                        <input type="email" id="email" name="email" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="age">Age *</label>
+                                        <input type="number" id="age" name="age" class="form-control" min="18" max="65" required>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="phone">Phone Number *</label>
-                                <input type="tel" id="phone" name="phone" class="form-control" required>
+
+                            <div class="form-section">
+                                <h3>Medical Information</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="bloodGroup">Blood Group *</label>
+                                        <select id="bloodGroup" name="bloodGroup" class="form-control" required>
+                                            <option value="">Select Blood Group</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="city">City *</label>
+                                        <input type="text" id="city" name="city" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="address">Address *</label>
+                                    <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label" for="email">Email *</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
+
+                            <div class="form-section">
+                                <h3>Location</h3>
+                                <div class="location-card">
+                                    <button type="button" class="btn btn--outline" id="captureLocation">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Capture Current Location
+                                    </button>
+                                    <div id="locationStatus" class="location-status"></div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="age">Age *</label>
-                                <input type="number" id="age" name="age" class="form-control" min="18" max="65" required>
+
+                            <div class="consent-section">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="consent" name="consent" required>
+                                    <span class="checkmark"></span>
+                                    I consent to sharing my information with blood requesters for donation purposes
+                                </label>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label" for="bloodGroup">Blood Group *</label>
-                                <select id="bloodGroup" name="bloodGroup" class="form-control" required>
-                                    <option value="">Select Blood Group</option>
-                                    <option value="A+">A+</option>
-                                    <option value="A-">A-</option>
-                                    <option value="B+">B+</option>
-                                    <option value="B-">B-</option>
-                                    <option value="AB+">AB+</option>
-                                    <option value="AB-">AB-</option>
-                                    <option value="O+">O+</option>
-                                    <option value="O-">O-</option>
-                                </select>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn--primary btn--full-width btn--lg">
+                                    <i class="fas fa-heart"></i>
+                                    Register as Life Saver
+                                </button>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="city">City *</label>
-                                <input type="text" id="city" name="city" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="address">Address *</label>
-                            <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
-                        </div>
-                        <div class="location-section">
-                            <button type="button" class="btn btn--secondary" id="captureLocation">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Capture Current Location
-                            </button>
-                            <div id="locationStatus" class="location-status"></div>
-                        </div>
-                        <div class="consent-section">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="consent" name="consent" required>
-                                <span class="checkmark"></span>
-                                I consent to sharing my information with blood requesters for donation purposes
-                            </label>
-                        </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn--primary btn--full-width">
-                                Register as Donor
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,40 +175,71 @@
                     <h2>Request Blood</h2>
                 </div>
                 <div class="form-container">
-                    <form id="requestForm" class="request-form">
-                        <div class="form-group">
-                            <label class="form-label" for="requiredBloodType">Required Blood Type *</label>
-                            <select id="requiredBloodType" name="requiredBloodType" class="form-control" required>
-                                <option value="">Select Blood Type</option>
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                                <option value="O+">O+</option>
-                                <option value="O-">O-</option>
-                            </select>
-                        </div>
-                        <div class="location-section">
-                            <h3>Location</h3>
-                            <button type="button" class="btn btn--secondary" id="captureRequestLocation">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Use Current Location
-                            </button>
-                            <div class="form-group">
-                                <label class="form-label" for="manualAddress">Or Enter Address Manually</label>
-                                <input type="text" id="manualAddress" name="manualAddress" class="form-control" placeholder="Enter your address">
+                    <div class="form-card">
+                        <form id="requestForm" class="request-form">
+                            <div class="form-section">
+                                <h3>Blood Type Needed</h3>
+                                <div class="blood-type-selector">
+                                    <div class="blood-type-grid">
+                                        <label class="blood-type-option" data-type="A+">
+                                            <input type="radio" name="requiredBloodType" value="A+" required>
+                                            <span class="blood-type-badge">A+</span>
+                                        </label>
+                                        <label class="blood-type-option" data-type="A-">
+                                            <input type="radio" name="requiredBloodType" value="A-" required>
+                                            <span class="blood-type-badge">A-</span>
+                                        </label>
+                                        <label class="blood-type-option" data-type="B+">
+                                            <input type="radio" name="requiredBloodType" value="B+" required>
+                                            <span class="blood-type-badge">B+</span>
+                                        </label>
+                                        <label class="blood-type-option" data-type="B-">
+                                            <input type="radio" name="requiredBloodType" value="B-" required>
+                                            <span class="blood-type-badge">B-</span>
+                                        </label>
+                                        <label class="blood-type-option" data-type="AB+">
+                                            <input type="radio" name="requiredBloodType" value="AB+" required>
+                                            <span class="blood-type-badge">AB+</span>
+                                        </label>
+                                        <label class="blood-type-option" data-type="AB-">
+                                            <input type="radio" name="requiredBloodType" value="AB-" required>
+                                            <span class="blood-type-badge">AB-</span>
+                                        </label>
+                                        <label class="blood-type-option" data-type="O+">
+                                            <input type="radio" name="requiredBloodType" value="O+" required>
+                                            <span class="blood-type-badge">O+</span>
+                                        </label>
+                                        <label class="blood-type-option" data-type="O-">
+                                            <input type="radio" name="requiredBloodType" value="O-" required>
+                                            <span class="blood-type-badge">O-</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="requestLocationStatus" class="location-status"></div>
-                        </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn--primary btn--full-width">
-                                <i class="fas fa-search"></i>
-                                Find Donors
-                            </button>
-                        </div>
-                    </form>
+
+                            <div class="form-section">
+                                <h3>Location</h3>
+                                <div class="location-card">
+                                    <button type="button" class="btn btn--outline" id="captureRequestLocation">
+                                        <i class="fas fa-crosshairs"></i>
+                                        Use Current Location
+                                    </button>
+                                    <div class="form-group">
+                                        <label class="form-label" for="manualAddress">Or Enter Address Manually</label>
+                                        <input type="text" id="manualAddress" name="manualAddress" class="form-control" placeholder="Enter your address">
+                                    </div>
+                                    <div id="requestLocationStatus" class="location-status"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn--primary btn--full-width btn--lg">
+                                    <i class="fas fa-search"></i>
+                                    Find Available Donors
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -183,30 +252,38 @@
                         <i class="fas fa-arrow-left"></i> Back to Search
                     </button>
                     <h2>Available Donors</h2>
+                    <div class="results-summary" id="resultsSummary"></div>
                 </div>
                 <div class="results-container">
                     <div class="results-layout">
                         <div class="map-section">
-                            <h3>Donors Map</h3>
-                            <div class="radar-map" id="radarMap">
-                                <div class="radar-center"></div>
-                                <div class="radar-circle circle-1"></div>
-                                <div class="radar-circle circle-2"></div>
-                                <div class="radar-circle circle-3"></div>
-                                <div class="radar-markers" id="radarMarkers"></div>
-                            </div>
-                            <div class="legend">
-                                <h4>Blood Types</h4>
-                                <div class="legend-items" id="legendItems"></div>
+                            <div class="section-card">
+                                <h3><i class="fas fa-map-marked-alt"></i> Donors Map</h3>
+                                <div class="radar-map" id="radarMap">
+                                    <div class="radar-center"></div>
+                                    <div class="radar-circle circle-1"></div>
+                                    <div class="radar-circle circle-2"></div>
+                                    <div class="radar-circle circle-3"></div>
+                                    <div class="radar-markers" id="radarMarkers"></div>
+                                </div>
+                                <div class="legend">
+                                    <h4>Blood Types</h4>
+                                    <div class="legend-items" id="legendItems"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="list-section">
-                            <h3>Donor List</h3>
-                            <div class="donor-list" id="donorList"></div>
-                            <div class="no-donors" id="noDonors" style="display: none;">
-                                <h4>No Donors Available</h4>
-                                <p>We couldn't find any compatible donors nearby. Here are some blood banks you can contact:</p>
-                                <div class="blood-camps" id="bloodCamps"></div>
+                            <div class="section-card">
+                                <h3><i class="fas fa-users"></i> Donor List</h3>
+                                <div class="donor-list" id="donorList"></div>
+                                <div class="no-donors" id="noDonors" style="display: none;">
+                                    <div class="no-donors-icon">
+                                        <i class="fas fa-search-minus"></i>
+                                    </div>
+                                    <h4>No Donors Available</h4>
+                                    <p>We couldn't find any compatible donors nearby. Here are some blood banks you can contact:</p>
+                                    <div class="blood-camps" id="bloodCamps"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -221,18 +298,12 @@
                     <button class="btn-back" onclick="navigateTo('home')">
                         <i class="fas fa-arrow-left"></i> Back
                     </button>
-                    <h2>Top Donors</h2>
+                    <h2>Top Life Savers</h2>
+                    <p class="page-subtitle">Celebrating our amazing donors</p>
                 </div>
                 <div class="leaderboard-container">
-                    <div class="leaderboard-table">
-                        <div class="table-header">
-                            <div class="table-cell">Rank</div>
-                            <div class="table-cell">Name</div>
-                            <div class="table-cell">Blood Type</div>
-                            <div class="table-cell">Donations</div>
-                            <div class="table-cell">Last Donation</div>
-                        </div>
-                        <div class="table-body" id="leaderboardBody"></div>
+                    <div class="leaderboard-card">
+                        <div class="leaderboard-body" id="leaderboardBody"></div>
                     </div>
                 </div>
             </div>
@@ -250,16 +321,20 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="modal-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
                 <p id="modalMessage">Operation completed successfully!</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn--primary" onclick="closeModal()">OK</button>
+                <button class="btn btn--primary" onclick="closeModal()">Got It</button>
             </div>
         </div>
     </div>
 
     <!-- Copy Notification -->
     <div id="copyNotification" class="notification hidden">
+        <i class="fas fa-copy"></i>
         Phone number copied to clipboard!
     </div>
 
