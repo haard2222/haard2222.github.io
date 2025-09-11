@@ -3,590 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LifeLink - Save Lives Through Blood Donation</title>
+    <title>LifeSaver - Blood Donation Network</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Maps JavaScript API -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFQ62nJD45JEvhuMORoBXYdnADcJL2Znw&libraries=marker&callback=initializeApp"></script>
-    <!-- Google Identity Services -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-heart pulse"></i>
-                    </div>
-                    <span>LifeLink</span>
-                </div>
-                <nav class="nav">
-                    <a href="#home" class="nav-link active">Home</a>
-                    <a href="#dashboard" class="nav-link">Dashboard</a>
-                    <a href="#community" class="nav-link">Community</a>
-                    <a href="#blood-banks" class="nav-link">Blood Banks</a>
-                    <a href="#leaderboard" class="nav-link">Leaderboard</a>
+            <div class="flex items-center justify-between">
+                <h1 class="header__title">🩸 LifeSaver</h1>
+                <nav class="header__nav">
+                    <button class="btn btn--outline btn--sm" id="findDonorsBtn">Find Donors</button>
+                    <button class="btn btn--primary btn--sm" id="requestBloodBtn">Request Blood</button>
                 </nav>
-                <div class="header-actions">
-                    <div id="authSection" class="auth-section">
-                        <button class="btn btn--primary" id="signInBtn" onclick="showAuthModal()">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Sign In
-                        </button>
-                        <div id="userProfile" class="user-profile hidden">
-                            <img id="userAvatar" class="user-avatar" src="" alt="User Avatar">
-                            <div class="user-info">
-                                <span id="userName" class="user-name"></span>
-                                <button class="btn btn--outline btn--sm" onclick="signOut()">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    Sign Out
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="theme-toggle" id="themeToggle">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                </div>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="main">
-        <!-- Homepage -->
-        <div id="home" class="page active">
-            <!-- Hero Section -->
-            <section class="hero">
-                <div class="hero-bg">
-                    <div class="blood-drops">
-                        <div class="drop"></div>
-                        <div class="drop"></div>
-                        <div class="drop"></div>
-                        <div class="drop"></div>
-                        <div class="drop"></div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="hero-content">
-                        <h1 class="hero-title">Every Drop Counts, Every Life Matters</h1>
-                        <p class="hero-subtitle">Connect with verified blood donors and save lives in your community through our smart matching platform</p>
-                        <div class="hero-actions">
-                            <button class="btn btn--primary btn--lg pulse-on-hover" onclick="checkAuthAndNavigate('register')">
-                                <i class="fas fa-heart"></i>
-                                Become a Life Saver
-                            </button>
-                            <button class="btn btn--outline btn--lg" onclick="checkAuthAndNavigate('request')">
-                                <i class="fas fa-search"></i>
-                                Find Blood Donors
-                            </button>
-                        </div>
-                        <div class="emergency-banner" onclick="navigateTo('emergency')">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <span>2 Critical Blood Requests Need Your Help!</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Stats Section -->
-            <section class="stats-section">
-                <div class="container">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number" data-target="15420">0</div>
-                                <div class="stat-label">Verified Donors</div>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number" data-target="8764">0</div>
-                                <div class="stat-label">Lives Saved</div>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number" data-target="2384">0</div>
-                                <div class="stat-label">Verified Requests</div>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number" data-target="12">0</div>
-                                <div class="stat-label">Active Requests</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Featured Donor -->
-            <section class="featured-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2>Donor of the Month</h2>
-                        <p>Celebrating our community heroes</p>
-                    </div>
-                    <div class="featured-donor">
-                        <div class="featured-avatar">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e1f5fe'/%3E%3Cpath d='M50 30c8 0 15 7 15 15 0 8-7 15-15 15s-15-7-15-15c0-8 7-15 15-15zm0 35c12 0 22 5 22 12v8H28v-8c0-7 10-12 22-12z' fill='%2321838c'/%3E%3C/svg%3E" alt="Vikram Singh">
-                            <div class="donor-badge">
-                                <i class="fas fa-crown"></i>
-                            </div>
-                            <div class="verification-badge">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                        </div>
-                        <div class="featured-content">
-                            <h3>Vikram Singh</h3>
-                            <div class="featured-stats">
-                                <span class="blood-type">O-</span>
-                                <span class="donation-count">20 Donations</span>
-                                <span class="city">Jaipur</span>
-                                <span class="verification-status verified">AI Verified</span>
-                            </div>
-                            <div class="featured-achievements">
-                                <span class="achievement">👼 Guardian Angel</span>
-                                <span class="achievement">🏆 Community Champion</span>
-                                <span class="achievement">🚨 Emergency Responder</span>
-                            </div>
-                            <p class="featured-quote">"Every donation is a chance to give someone a second chance at life. It's the most rewarding feeling."</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Testimonials -->
-            <section class="testimonials-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h2>Success Stories</h2>
-                        <p>Real stories from those whose lives were saved</p>
-                    </div>
-                    <div class="testimonials-carousel">
-                        <div class="testimonial-card active">
-                            <div class="testimonial-content">
-                                <p>"Thanks to LifeLink's verified system, I found a donor within 30 minutes during my father's emergency surgery. Forever grateful!"</p>
-                                <div class="testimonial-author">
-                                    <strong>Ravi Krishnan</strong>
-                                    <span>O- • Chennai</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="testimonial-content">
-                                <p>"As a doctor, I've seen LifeLink's AI verification save countless lives. The authenticity checks give us confidence."</p>
-                                <div class="testimonial-author">
-                                    <strong>Dr. Sarah Matthew</strong>
-                                    <span>AB+ • Mumbai</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="testimonial-content">
-                                <p>"Donated blood 15 times through LifeLink. The Google authentication and real-time tracking make it so secure and easy."</p>
-                                <div class="testimonial-author">
-                                    <strong>Akash Verma</strong>
-                                    <span>B+ • Delhi</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-indicators">
-                        <button class="indicator active" onclick="showTestimonial(0)"></button>
-                        <button class="indicator" onclick="showTestimonial(1)"></button>
-                        <button class="indicator" onclick="showTestimonial(2)"></button>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Donor Registration Page -->
-        <div id="register" class="page">
+        <!-- Hero Section -->
+        <section class="hero">
             <div class="container">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('home')">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <div class="page-title">
-                        <h2>Become a Verified Life Saver</h2>
-                        <p>Join thousands of authenticated heroes making a difference</p>
+                <div class="hero__content">
+                    <h2 class="hero__title">Save Lives Through Blood Donation</h2>
+                    <p class="hero__description">Connect with verified blood donors in your area instantly. Upload your medical documents and find compatible donors nearby.</p>
+                    <div class="hero__actions">
+                        <button class="btn btn--primary btn--lg" id="startRequestBtn">Request Blood Now</button>
+                        <button class="btn btn--outline btn--lg" id="viewMapBtn">View Donors Map</button>
                     </div>
-                </div>
-                
-                <div class="auth-check" id="registerAuthCheck">
-                    <div class="auth-required-message">
-                        <div class="auth-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3>Authentication Required</h3>
-                        <p>To ensure the safety of our community, please sign in with Google to register as a blood donor.</p>
-                        <button class="btn btn--primary btn--lg" onclick="showAuthModal()">
-                            <i class="fab fa-google"></i>
-                            Sign In with Google
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="registration-container" id="registrationForm" style="display: none;">
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-                        <div class="progress-steps">
-                            <div class="step active" data-step="1">
-                                <i class="fas fa-user"></i>
-                                <span>Personal</span>
-                            </div>
-                            <div class="step" data-step="2">
-                                <i class="fas fa-tint"></i>
-                                <span>Medical</span>
-                            </div>
-                            <div class="step" data-step="3">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Location</span>
-                            </div>
-                            <div class="step" data-step="4">
-                                <i class="fas fa-check"></i>
-                                <span>Complete</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <form id="donorForm" class="donor-form">
-                        <!-- Step 1: Personal Information -->
-                        <div class="form-step active" data-step="1">
-                            <div class="step-header">
-                                <h3>Personal Information</h3>
-                                <p>Your Google profile information will be used</p>
-                            </div>
-                            <div class="google-profile-info" id="googleProfileInfo">
-                                <div class="profile-preview">
-                                    <img id="profilePreviewAvatar" class="profile-avatar" src="" alt="Profile">
-                                    <div class="profile-details">
-                                        <div class="profile-name" id="profilePreviewName"></div>
-                                        <div class="profile-email" id="profilePreviewEmail"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label" for="phone">Phone Number *</label>
-                                    <input type="tel" id="phone" name="phone" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="age">Age *</label>
-                                    <input type="number" id="age" name="age" class="form-control" min="18" max="65" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="gender">Gender *</label>
-                                <select id="gender" name="gender" class="form-control" required>
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Step 2: Medical Information -->
-                        <div class="form-step" data-step="2">
-                            <div class="step-header">
-                                <h3>Medical Information</h3>
-                                <p>Help us ensure safe donations</p>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label" for="bloodGroup">Blood Group *</label>
-                                    <select id="bloodGroup" name="bloodGroup" class="form-control" required>
-                                        <option value="">Select Blood Group</option>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
-                                        <option value="O+">O+</option>
-                                        <option value="O-">O-</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="weight">Weight (kg) *</label>
-                                    <input type="number" id="weight" name="weight" class="form-control" min="50" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="preferredTime">Preferred Donation Time</label>
-                                <select id="preferredTime" name="preferredTime" class="form-control">
-                                    <option value="Morning">Morning (6 AM - 12 PM)</option>
-                                    <option value="Afternoon">Afternoon (12 PM - 6 PM)</option>
-                                    <option value="Evening">Evening (6 PM - 10 PM)</option>
-                                    <option value="Any">Any Time</option>
-                                </select>
-                            </div>
-                            <div class="medical-questions">
-                                <h4>Medical History</h4>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="medicalConditions" value="diabetes">
-                                        <span class="checkmark"></span>
-                                        Do you have diabetes?
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="medicalConditions" value="hypertension">
-                                        <span class="checkmark"></span>
-                                        Do you have high blood pressure?
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="medicalConditions" value="heart-disease">
-                                        <span class="checkmark"></span>
-                                        Do you have any heart conditions?
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Step 3: Location & Availability -->
-                        <div class="form-step" data-step="3">
-                            <div class="step-header">
-                                <h3>Location & Availability</h3>
-                                <p>Help others find you when they need help</p>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="city">City *</label>
-                                <input type="text" id="city" name="city" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="address">Address *</label>
-                                <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
-                            </div>
-                            <div class="location-section">
-                                <button type="button" class="btn btn--secondary" id="captureLocation">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Get Current Location
-                                </button>
-                                <div id="locationStatus" class="location-status"></div>
-                            </div>
-                            <div class="availability-section">
-                                <label class="form-label">Availability Status</label>
-                                <div class="status-options">
-                                    <label class="radio-label">
-                                        <input type="radio" name="availability" value="Available" checked>
-                                        <span class="radio-mark"></span>
-                                        <span class="status-text">Available</span>
-                                    </label>
-                                    <label class="radio-label">
-                                        <input type="radio" name="availability" value="Busy">
-                                        <span class="radio-mark"></span>
-                                        <span class="status-text">Busy</span>
-                                    </label>
-                                    <label class="radio-label">
-                                        <input type="radio" name="availability" value="Away">
-                                        <span class="radio-mark"></span>
-                                        <span class="status-text">Away</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Step 4: Consent & Completion -->
-                        <div class="form-step" data-step="4">
-                            <div class="step-header">
-                                <h3>Terms & Consent</h3>
-                                <p>Final step to become a verified life saver</p>
-                            </div>
-                            <div class="achievement-preview">
-                                <h4>Your First Achievement Awaits!</h4>
-                                <div class="preview-badge">
-                                    <span class="badge-icon">🩸</span>
-                                    <div class="badge-info">
-                                        <strong>Verified Donor</strong>
-                                        <p>Google-authenticated blood donor</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="consent-section">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="consent" name="consent" required>
-                                    <span class="checkmark"></span>
-                                    I consent to sharing my verified information with blood requesters for donation purposes
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="notifications" name="notifications">
-                                    <span class="checkmark"></span>
-                                    I want to receive notifications for verified emergency blood requests in my area
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="button" class="btn btn--outline" id="prevStep" style="display: none;">
-                                <i class="fas fa-arrow-left"></i> Previous
-                            </button>
-                            <button type="button" class="btn btn--primary" id="nextStep">
-                                Next <i class="fas fa-arrow-right"></i>
-                            </button>
-                            <button type="submit" class="btn btn--primary" id="submitForm" style="display: none;">
-                                <i class="fas fa-heart"></i> Complete Registration
-                            </button>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Blood Request Page -->
-        <div id="request" class="page">
+        <!-- Document Upload Section -->
+        <section class="upload-section hidden" id="uploadSection">
             <div class="container">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('home')">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <div class="page-title">
-                        <h2>Request Blood with Verification</h2>
-                        <p>Find verified donors with AI-powered authentication</p>
+                <div class="card upload-card">
+                    <div class="card__header">
+                        <h3>Upload Medical Documents</h3>
+                        <p class="upload-card__subtitle">Upload prescription or hospital requisition to verify your blood requirement</p>
                     </div>
-                </div>
-                
-                <div class="auth-check" id="requestAuthCheck">
-                    <div class="auth-required-message">
-                        <div class="auth-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3>Authentication Required</h3>
-                        <p>To prevent fraudulent blood requests, please sign in with Google and verify your medical documents.</p>
-                        <button class="btn btn--primary btn--lg" onclick="showAuthModal()">
-                            <i class="fab fa-google"></i>
-                            Sign In with Google
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="request-container" id="requestFormContainer" style="display: none;">
-                    <!-- Document Verification Section -->
-                    <div class="verification-section">
-                        <div class="section-header">
-                            <h3>Document Verification</h3>
-                            <p>Upload medical prescription or hospital receipt for AI verification</p>
+                    <div class="card__body">
+                        <div class="upload-zone" id="uploadZone">
+                            <div class="upload-zone__content">
+                                <div class="upload-zone__icon">📄</div>
+                                <p class="upload-zone__text">
+                                    <span class="upload-zone__primary">Click to upload</span> or drag and drop
+                                </p>
+                                <p class="upload-zone__secondary">JPG, PNG or PDF (max. 5MB)</p>
+                            </div>
+                            <input type="file" id="fileInput" class="upload-zone__input" accept=".jpg,.jpeg,.png,.pdf" />
                         </div>
                         
-                        <div class="document-upload" id="documentUpload">
-                            <div class="upload-area" id="uploadArea">
-                                <div class="upload-icon">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                </div>
-                                <div class="upload-text">
-                                    <h4>Upload Medical Document</h4>
-                                    <p>Drag and drop or click to select prescription, hospital letter, or medical certificate</p>
-                                    <small>Supported formats: JPG, PNG, PDF (max 5MB)</small>
-                                </div>
-                                <input type="file" id="documentInput" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                <button type="button" class="btn btn--primary" onclick="document.getElementById('documentInput').click()">
-                                    Choose File
-                                </button>
+                        <!-- Processing State -->
+                        <div class="processing-state hidden" id="processingState">
+                            <div class="processing-state__spinner"></div>
+                            <p class="processing-state__text">Analyzing document with AI...</p>
+                            <div class="processing-state__progress">
+                                <div class="processing-state__progress-bar" id="progressBar"></div>
                             </div>
-                            
-                            <div class="document-preview" id="documentPreview" style="display: none;">
-                                <div class="preview-header">
-                                    <h4>Document Preview</h4>
-                                    <button type="button" class="btn-close" onclick="clearDocument()">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                                <div class="preview-content">
-                                    <img id="previewImage" class="preview-img" src="" alt="Document preview">
-                                    <div class="document-info">
-                                        <div class="file-name" id="fileName"></div>
-                                        <div class="file-size" id="fileSize"></div>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn--primary" id="verifyDocBtn" onclick="verifyDocument()">
-                                    <i class="fas fa-search"></i>
-                                    Verify with AI
-                                </button>
+                        </div>
+
+                        <!-- Verification Results -->
+                        <div class="verification-results hidden" id="verificationResults">
+                            <div class="verification-results__header">
+                                <div class="verification-results__icon" id="resultIcon">✅</div>
+                                <h4 class="verification-results__title" id="resultTitle">Document Verified</h4>
                             </div>
-                            
-                            <div class="verification-progress" id="verificationProgress" style="display: none;">
-                                <div class="progress-content">
-                                    <div class="progress-spinner">
-                                        <div class="spinner"></div>
-                                    </div>
-                                    <div class="progress-text">
-                                        <h4>AI Verification in Progress</h4>
-                                        <p id="progressText">Analyzing document authenticity...</p>
-                                    </div>
-                                </div>
+                            <p class="verification-results__details" id="resultDetails"></p>
+                            <div class="verification-results__confidence">
+                                <span>Confidence Score: <strong id="confidenceScore">95%</strong></span>
                             </div>
-                            
-                            <div class="verification-result" id="verificationResult" style="display: none;">
-                                <div class="result-icon">
-                                    <i id="resultIcon" class="fas fa-check-circle"></i>
-                                </div>
-                                <div class="result-content">
-                                    <h4 id="resultTitle">Document Verified Successfully</h4>
-                                    <p id="resultDescription">Your medical prescription has been authenticated by our AI system.</p>
-                                    <div class="verification-score">
-                                        <span>Confidence Score: </span>
-                                        <span id="confidenceScore" class="score">95%</span>
-                                    </div>
-                                </div>
-                            </div>
+                            <button class="btn btn--primary" id="proceedToMapBtn">Proceed to Find Donors</button>
+                        </div>
+
+                        <!-- Demo Notice -->
+                        <div class="demo-notice">
+                            <p><strong>Demo Mode:</strong> This is a simulation for GitHub Pages demonstration. In production, documents would be processed securely on the server.</p>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
 
-                    <form id="requestForm" class="request-form">
-                        <div class="urgency-selector">
-                            <h3>Request Type</h3>
-                            <div class="urgency-options">
-                                <label class="urgency-card">
-                                    <input type="radio" name="urgency" value="Critical">
-                                    <div class="urgency-content critical">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        <strong>Critical</strong>
-                                        <p>Life-threatening emergency</p>
-                                    </div>
-                                </label>
-                                <label class="urgency-card">
-                                    <input type="radio" name="urgency" value="Urgent" checked>
-                                    <div class="urgency-content urgent">
-                                        <i class="fas fa-clock"></i>
-                                        <strong>Urgent</strong>
-                                        <p>Needed within hours</p>
-                                    </div>
-                                </label>
-                                <label class="urgency-card">
-                                    <input type="radio" name="urgency" value="Routine">
-                                    <div class="urgency-content routine">
-                                        <i class="fas fa-calendar"></i>
-                                        <strong>Routine</strong>
-                                        <p>Scheduled procedure</p>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label" for="requiredBloodType">Blood Type Needed *</label>
-                                <select id="requiredBloodType" name="requiredBloodType" class="form-control" required>
-                                    <option value="">Select Blood Type</option>
+        <!-- Map Section -->
+        <section class="map-section" id="mapSection">
+            <div class="container-full">
+                <div class="map-controls">
+                    <div class="container">
+                        <div class="flex items-center justify-between">
+                            <div class="map-controls__filters">
+                                <label class="form-label">Blood Type Needed:</label>
+                                <select class="form-control form-control--inline" id="bloodTypeFilter">
+                                    <option value="">All Types</option>
                                     <option value="A+">A+</option>
                                     <option value="A-">A-</option>
                                     <option value="B+">B+</option>
@@ -597,347 +107,131 @@
                                     <option value="O-">O-</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" for="unitsNeeded">Units Needed</label>
-                                <select id="unitsNeeded" name="unitsNeeded" class="form-control">
-                                    <option value="1">1 Unit</option>
-                                    <option value="2">2 Units</option>
-                                    <option value="3">3 Units</option>
-                                    <option value="4">4+ Units</option>
-                                </select>
+                            <div class="map-controls__actions">
+                                <button class="btn btn--outline btn--sm" id="getCurrentLocationBtn">📍 My Location</button>
+                                <button class="btn btn--secondary btn--sm" id="showBloodBanksBtn">🏥 Blood Banks</button>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="hospital">Hospital/Clinic</label>
-                            <select id="hospital" name="hospital" class="form-control">
-                                <option value="">Select Hospital</option>
-                                <option value="AIIMS Delhi">AIIMS Delhi</option>
-                                <option value="Apollo Hospital">Apollo Hospital</option>
-                                <option value="Max Hospital">Max Hospital</option>
-                                <option value="Fortis Hospital">Fortis Hospital</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-
-                        <div class="location-section">
-                            <h3>Location</h3>
-                            <div class="location-options">
-                                <button type="button" class="btn btn--secondary" id="captureRequestLocation">
-                                    <i class="fas fa-crosshairs"></i>
-                                    Use Current Location
-                                </button>
-                                <div class="form-group">
-                                    <label class="form-label" for="manualAddress">Or Enter Address</label>
-                                    <input type="text" id="manualAddress" name="manualAddress" class="form-control" placeholder="Enter location or hospital address">
-                                </div>
-                            </div>
-                            <div id="requestLocationStatus" class="location-status"></div>
-                        </div>
-
-                        <div class="verification-status" id="requestVerificationStatus">
-                            <div class="status-indicator pending">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <span>Document verification required to proceed</span>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn--primary btn--lg btn--full-width" id="submitRequestBtn" disabled>
-                                <i class="fas fa-search"></i>
-                                Find Verified Donors
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Results Page -->
-        <div id="results" class="page">
-            <div class="container">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('request')">
-                        <i class="fas fa-arrow-left"></i> Back to Search
-                    </button>
-                    <div class="page-title">
-                        <h2>Verified Donors</h2>
-                        <p id="resultsSubtitle">Found compatible verified donors for your request</p>
                     </div>
                 </div>
                 
-                <div class="results-filters">
-                    <div class="filter-section">
-                        <button class="filter-btn active" data-filter="all">
-                            <i class="fas fa-list"></i> All Results
-                        </button>
-                        <button class="filter-btn" data-filter="online">
-                            <i class="fas fa-circle" style="color: #51CF66;"></i> Online Now
-                        </button>
-                        <button class="filter-btn" data-filter="nearby">
-                            <i class="fas fa-map-marker-alt"></i> Nearby (5km)
-                        </button>
-                        <select class="sort-select" id="sortSelect">
-                            <option value="distance">Sort by Distance</option>
-                            <option value="donations">Sort by Experience</option>
-                            <option value="recent">Sort by Recent Activity</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="results-container">
-                    <div class="results-layout">
-                        <div class="map-section">
-                            <div class="map-header">
-                                <h3>Google Maps - Donor Locations</h3>
-                                <div class="map-controls">
-                                    <button class="map-control" onclick="toggleMapType()">
-                                        <i class="fas fa-layer-group"></i>
-                                    </button>
-                                    <button class="map-control" onclick="centerMapOnUser()">
-                                        <i class="fas fa-crosshairs"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="google-map" id="googleMap"></div>
-                            <div class="legend">
-                                <h4>Blood Types & Verification Status</h4>
-                                <div class="legend-items" id="legendItems"></div>
-                                <div class="legend-status">
-                                    <div class="status-item">
-                                        <div class="status-dot online"></div>
-                                        <span>Online & Verified</span>
-                                    </div>
-                                    <div class="status-item">
-                                        <div class="status-dot offline"></div>
-                                        <span>Offline</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="list-section">
-                            <div class="list-header">
-                                <h3>Verified Donor List</h3>
-                                <div class="view-toggle">
-                                    <button class="toggle-btn active" data-view="list">
-                                        <i class="fas fa-list"></i>
-                                    </button>
-                                    <button class="toggle-btn" data-view="grid">
-                                        <i class="fas fa-th"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="donor-list" id="donorList"></div>
-                            <div class="no-donors" id="noDonors" style="display: none;">
-                                <div class="no-donors-icon">
-                                    <i class="fas fa-search"></i>
-                                </div>
-                                <h4>No Verified Donors Found</h4>
-                                <p>Don't worry! Here are nearby verified blood banks you can contact:</p>
-                                <div class="blood-camps" id="bloodCamps"></div>
-                            </div>
+                <!-- Map Container -->
+                <div class="map-container" style="position: relative; height: 600px;">
+                    <div id="map" style="width: 100%; height: 100%;"></div>
+                    
+                    <!-- Map Loading State -->
+                    <div class="map-loading" id="mapLoading">
+                        <div class="map-loading__content">
+                            <div class="map-loading__spinner"></div>
+                            <p>Loading map and donors...</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Other Pages (simplified for space) -->
-        <div id="dashboard" class="page">
-            <div class="container">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('home')">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <div class="page-title">
-                        <h2>Verified Donor Dashboard</h2>
-                        <p>Track your verified impact and achievements</p>
+        <!-- Donor Info Panel -->
+        <div class="donor-panel hidden" id="donorPanel">
+            <div class="donor-panel__header">
+                <h4 class="donor-panel__title" id="donorName">Donor Information</h4>
+                <button class="donor-panel__close" id="closeDonorPanel">×</button>
+            </div>
+            <div class="donor-panel__content">
+                <div class="donor-panel__blood-type">
+                    <span class="status" id="donorBloodType">O+</span>
+                </div>
+                <div class="donor-panel__details">
+                    <div class="donor-panel__detail">
+                        <span class="donor-panel__label">Phone:</span>
+                        <span class="donor-panel__value" id="donorPhone">+91-9876543210</span>
+                    </div>
+                    <div class="donor-panel__detail">
+                        <span class="donor-panel__label">Address:</span>
+                        <span class="donor-panel__value" id="donorAddress">Location</span>
+                    </div>
+                    <div class="donor-panel__detail">
+                        <span class="donor-panel__label">Donations:</span>
+                        <span class="donor-panel__value" id="donorCount">12 times</span>
+                    </div>
+                    <div class="donor-panel__detail">
+                        <span class="donor-panel__label">Last Donation:</span>
+                        <span class="donor-panel__value" id="donorLastDonation">Aug 20, 2025</span>
+                    </div>
+                    <div class="donor-panel__detail">
+                        <span class="donor-panel__label">Preferred Time:</span>
+                        <span class="donor-panel__value" id="donorPreferredTime">Morning</span>
+                    </div>
+                    <div class="donor-panel__detail">
+                        <span class="donor-panel__label">Distance:</span>
+                        <span class="donor-panel__value" id="donorDistance">Calculating...</span>
                     </div>
                 </div>
-                <div class="dashboard-content">
-                    <div class="dashboard-grid">
-                        <div class="dashboard-card">
-                            <h3>Your Verified Impact</h3>
-                            <div class="impact-stats">
-                                <div class="impact-item">
-                                    <span class="impact-number">0</span>
-                                    <span class="impact-label">Lives Saved</span>
-                                </div>
-                                <div class="impact-item">
-                                    <span class="impact-number">0</span>
-                                    <span class="impact-label">Verified Donations</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Achievements</h3>
-                            <div class="achievements-grid" id="achievementsGrid"></div>
-                        </div>
-                        <div class="dashboard-card">
-                            <h3>Active Challenges</h3>
-                            <div class="challenges-list" id="challengesList"></div>
-                        </div>
+                <div class="donor-panel__actions">
+                    <button class="btn btn--primary btn--full-width" id="contactDonorBtn">
+                        📞 Contact Donor
+                    </button>
+                    <button class="btn btn--outline btn--full-width" id="getDirectionsBtn">
+                        🗺️ Get Directions
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <section class="stats-section">
+            <div class="container">
+                <h3 class="stats-section__title">Live Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card__value" id="totalDonors">6</div>
+                        <div class="stat-card__label">Available Donors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__value" id="totalBloodBanks">3</div>
+                        <div class="stat-card__label">Blood Banks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__value" id="totalDonations">70</div>
+                        <div class="stat-card__label">Total Donations</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__value">24/7</div>
+                        <div class="stat-card__label">Service Available</div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Leaderboard Page -->
-        <div id="leaderboard" class="page">
-            <div class="container">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('home')">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <div class="page-title">
-                        <h2>Verified Donor Leaderboard</h2>
-                        <p>Community heroes making a verified difference</p>
-                    </div>
-                </div>
-                <div class="leaderboard-tabs">
-                    <button class="tab-btn active" data-tab="monthly">Monthly</button>
-                    <button class="tab-btn" data-tab="yearly">Yearly</button>
-                    <button class="tab-btn" data-tab="city">By City</button>
-                </div>
-                <div class="leaderboard-container">
-                    <div class="leaderboard-table" id="leaderboardTable"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Additional pages -->
-        <div id="community" class="page">
-            <div class="container">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('home')">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <h2>Verified Community</h2>
-                </div>
-                <p>Community features for verified users coming soon...</p>
-            </div>
-        </div>
-
-        <div id="blood-banks" class="page">
-            <div class="container">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('home')">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <h2>Verified Blood Banks</h2>
-                </div>
-                <div class="blood-banks-grid" id="bloodBanksGrid"></div>
-            </div>
-        </div>
-
-        <div id="emergency" class="page">
-            <div class="container">
-                <div class="page-header">
-                    <button class="btn-back" onclick="navigateTo('home')">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <h2>Verified Emergency Requests</h2>
-                </div>
-                <div class="emergency-requests" id="emergencyRequests"></div>
-            </div>
-        </div>
+        </section>
     </main>
 
-    <!-- Google Sign-In Modal -->
-    <div id="authModal" class="modal hidden">
-        <div class="modal-overlay" onclick="closeAuthModal()"></div>
-        <div class="modal-content auth-modal">
-            <div class="modal-header">
-                <h3>Sign In to LifeLink</h3>
-                <button class="modal-close" onclick="closeAuthModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="auth-content">
-                    <div class="auth-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h4>Secure Authentication</h4>
-                    <p>Sign in with your Google account to access verified features and ensure the safety of our community.</p>
-                    
-                    <div class="google-signin-container">
-                        <div id="g_id_onload"
-                             data-client_id="802774386823-ls3anbs56qeahbkge1sdrs8dcjtsambl.apps.googleusercontent.com"
-                             data-context="signin"
-                             data-ux_mode="popup"
-                             data-callback="handleCredentialResponse"
-                             data-auto_prompt="false">
-                        </div>
-                        
-                        <div class="g_id_signin"
-                             data-type="standard"
-                             data-shape="rectangular"
-                             data-theme="outline"
-                             data-text="signin_with"
-                             data-size="large"
-                             data-logo_alignment="left">
-                        </div>
-                    </div>
-                    
-                    <div class="security-features">
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Verified identity protection</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>AI-powered document verification</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-user-check"></i>
-                            <span>Trusted community access</span>
-                        </div>
-                    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h4>LifeSaver</h4>
+                    <p>Connecting lives through blood donation</p>
+                </div>
+                <div class="footer__section">
+                    <h5>Emergency Contacts</h5>
+                    <p>📞 National Blood Helpline: 104</p>
+                    <p>🏥 Emergency Services: 108</p>
+                </div>
+                <div class="footer__section">
+                    <h5>About This Demo</h5>
+                    <p>This is a demonstration of a blood donation platform built for GitHub Pages with real Google Maps integration.</p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div id="successModal" class="modal hidden">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Success!</h3>
-                <button class="modal-close" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="success-animation">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <p id="modalMessage">Operation completed successfully!</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn--primary" onclick="closeModal()">Continue</button>
+            <div class="footer__bottom">
+                <p>&copy; 2025 LifeSaver - Saving Lives Together</p>
             </div>
         </div>
-    </div>
+    </footer>
 
-    <!-- Notification Toast -->
-    <div id="toast" class="toast hidden">
-        <div class="toast-content">
-            <i class="toast-icon"></i>
-            <span class="toast-message"></span>
-        </div>
-    </div>
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="loading-spinner">
-            <div class="spinner"></div>
-            <p>Finding verified donors...</p>
-        </div>
-    </div>
-
+    <!-- Scripts -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFQ62nJD45JEvhuMORoBXYdnADcJL2Znw&libraries=marker&callback=initMap"></script>
     <script src="app.js"></script>
 </body>
 </html>
