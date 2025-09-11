@@ -2,10 +2,14 @@
 const APP_DATA = {
   bloodTypes: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
   compatibility: {
-    "A+": ["A+", "AB+"], "A-": ["A+", "A-", "AB+", "AB-"],
-    "B+": ["B+", "AB+"], "B-": ["B+", "B-", "AB+", "AB-"],
-    "AB+": ["AB+"], "AB-": ["AB+", "AB-"],
-    "O+": ["A+", "B+", "AB+", "O+"], "O-": ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
+    "A+": ["A+", "A-", "O+", "O-"],
+    "A-": ["A-", "O-"],
+    "B+": ["B+", "B-", "O+", "O-"],
+    "B-": ["B-", "O-"],
+    "AB+": ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], // universal recipient
+    "AB-": ["A-", "B-", "AB-", "O-"],
+    "O+": ["O+", "O-"],
+    "O-": ["O-"] // universal donor
   },
   donors: [
     {
@@ -151,8 +155,10 @@ function setupEventListeners() {
   // Navigation buttons with explicit event handling
   setupButton('homeBtn', () => {
     console.log('Home clicked');
+    resetUploadSection(); // <-- Add this line
     showSection('home');
   });
+
 
   setupButton('requestBloodBtn', () => {
     console.log('Request Blood clicked');
@@ -300,52 +306,33 @@ function setupRegistrationForm() {
 }
 
 // Show/Hide sections
-function showSection(sectionName) {
-  console.log('Showing section:', sectionName);
-  
-  const sections = {
-    'home': 'homePage',
-    'upload': 'uploadSection',
-    'bloodType': 'bloodTypeSection',
-    'donorList': 'donorListSection',
-    'registration': 'registrationSection'
-  };
-  
-  // Hide all sections
-  Object.values(sections).forEach(sectionId => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.classList.add('hidden');
-    }
-  });
 
-  // Show target section
-  const targetSectionId = sections[sectionName];
-  const targetElement = document.getElementById(targetSectionId);
-  if (targetElement) {
-    targetElement.classList.remove('hidden');
-    currentSection = sectionName;
-    console.log('Successfully showed section:', sectionName);
-  } else {
-    console.error('Section element not found:', targetSectionId);
+function showSection(section) {
+  // Hide all main sections
+  document.getElementById('homePage').classList.add('hidden');
+  document.getElementById('uploadSection').classList.add('hidden');
+  document.getElementById('bloodTypeSection').classList.add('hidden');
+  document.getElementById('donorListSection').classList.add('hidden');
+  document.getElementById('registrationSection').classList.add('hidden');
+
+  // Show the requested section
+  switch (section) {
+    case 'home':
+      document.getElementById('homePage').classList.remove('hidden');
+      break;
+    case 'upload':
+      document.getElementById('uploadSection').classList.remove('hidden');
+      break;
+    case 'bloodType':
+      document.getElementById('bloodTypeSection').classList.remove('hidden');
+      break;
+    case 'donorList':
+      document.getElementById('donorListSection').classList.remove('hidden');
+      break;
+    case 'registration':
+      document.getElementById('registrationSection').classList.remove('hidden');
+      break;
   }
-
-  // Handle quote banner visibility
-  const quoteBanner = document.getElementById('quoteBanner');
-  if (quoteBanner) {
-    if (sectionName === 'home') {
-      quoteBanner.classList.remove('hidden');
-    } else {
-      quoteBanner.classList.add('hidden');
-    }
-  }
-
-  // Reset upload section when navigating to it
-  if (sectionName === 'upload') {
-    resetUploadSection();
-  }
-
-  window.scrollTo(0, 0);
 }
 
 function resetUploadSection() {
@@ -385,6 +372,8 @@ function processFile(file) {
 
   showToast('Starting document verification...', 'info');
   simulateDocumentVerification();
+
+  
 }
 
 // Simulate document verification
@@ -511,12 +500,7 @@ function handleSearch() {
 }
 
 // Handle sorting
-function handleSort() {
-  const sortFilter = document.getElementById('sortFilter');
-  const sortBy = sortFilter ? sortFilter.value : 'distance';
-  
-  console.log('Sorting by:', sortBy);
-  
+function sortFilteredDonors(sortBy) {
   switch(sortBy) {
     case 'distance':
       filteredDonors.sort((a, b) => a.distance - b.distance);
@@ -531,21 +515,24 @@ function handleSort() {
       filteredDonors.sort((a, b) => a.bloodType.localeCompare(b.bloodType));
       break;
   }
-  
+}
+
+function handleSort() {
+  const sortFilter = document.getElementById('sortFilter');
+  const sortBy = sortFilter ? sortFilter.value : 'distance';
+  sortFilteredDonors(sortBy);
+
   currentPage = 0;
   displayedDonors = [];
-  renderDonorList();
-  
+  loadMoreDonors();
+
   showToast(`Sorted by ${sortBy}`, 'info');
 }
 
-// Handle status filter
 function handleStatusFilter() {
   const statusFilter = document.getElementById('statusFilter');
   const status = statusFilter ? statusFilter.value : '';
-  
-  console.log('Filtering by status:', status);
-  
+
   const baseCompatible = selectedBloodType ? 
     APP_DATA.donors.filter(d => APP_DATA.compatibility[selectedBloodType].includes(d.bloodType)) :
     APP_DATA.donors;
@@ -567,13 +554,16 @@ function handleStatusFilter() {
   }
 
   // Apply current sort
-  handleSort();
-  
+  const sortFilter = document.getElementById('sortFilter');
+  const sortBy = sortFilter ? sortFilter.value : 'distance';
+  sortFilteredDonors(sortBy);
+
   currentPage = 0;
   displayedDonors = [];
-  renderDonorList();
+  loadMoreDonors();
   updateDonorCount();
 }
+
 
 // Load more donors
 function loadMoreDonors() {
@@ -796,6 +786,7 @@ function formatStatus(status) {
   };
   return statusMap[status] || status;
 }
+
 
 // Toast notifications
 function showToast(message, type = 'info') {
