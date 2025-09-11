@@ -282,5 +282,89 @@
 
     <!-- Scripts -->
     <script src="app.js"></script>
+    <script>const API_URL = 'https://translate.openlibre.com/translate'; // OpenLibre public instance
+
+// Utility: get all visible text nodes inside an element
+function getVisibleTextNodes(element) {
+  const walker = document.createTreeWalker(
+    element,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode: function(node) {
+        // Filter out empty or whitespace-only nodes
+        if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        // Check if parent is visible
+        const style = window.getComputedStyle(node.parentNode);
+        if (style.display === 'none' || style.visibility === 'hidden') return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    },
+    false
+  );
+  
+  let node;
+  const nodes = [];
+  while(node = walker.nextNode()) {
+    nodes.push(node);
+  }
+  return nodes;
+}
+
+// Translate an array of strings in bulk using OpenLibre Translate API
+async function translateBatch(textArray, targetLang) {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        q: textArray,
+        source: 'en',
+        target: targetLang,
+        format: 'text'
+      })
+    });
+    const data = await response.json();
+    return data.translatedText || [];
+  } catch (err) {
+    console.error('Translation API error:', err);
+    return textArray; // fallback to original
+  }
+}
+
+// Main translation function
+async function translatePage(targetLang) {
+  if (targetLang === 'en') {
+    // Reload page or reset text if needed
+    location.reload();
+    return;
+  }
+
+  const textNodes = getVisibleTextNodes(document.body);
+  const originalTexts = textNodes.map(node => node.nodeValue.trim());
+
+  // Split into batches to avoid too long requests (max 10 texts per batch)
+  const batchSize = 10;
+  for (let i = 0; i < originalTexts.length; i += batchSize) {
+    const batchTexts = originalTexts.slice(i, i + batchSize);
+    const translatedBatch = await translateBatch(batchTexts, targetLang);
+
+    // Replace text nodes with translated text
+    for (let j = 0; j < translatedBatch.length; j++) {
+      // Sometimes the translatedBatch can be a single string if one input is given, so check type
+      const translatedText = Array.isArray(translatedBatch) ? translatedBatch[j] : translatedBatch;
+      textNodes[i + j].nodeValue = translatedText;
+    }
+  }
+}
+
+// Example: listen to language selector dropdown changes
+document.getElementById('languageSelector')?.addEventListener('change', (e) => {
+  const lang = e.target.value;
+  translatePage(lang);
+});
+
+// Optional: auto-translate to Hindi on page load for demo
+// document.addEventListener('DOMContentLoaded', () => translatePage('hi'));
+</script>
 </body>
 </html>
